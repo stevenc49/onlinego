@@ -9,6 +9,15 @@ function loadGame() {
 	var canvas = document.getElementById('canvas');
 	var ctx = canvas.getContext('2d');
 
+	// load go board
+	var imageObj = new Image();
+	
+	imageObj.onload = function() {
+		ctx.drawImage(imageObj, 0, 0, 600, 600);
+	}
+
+	imageObj.src = 'http://www.mashbout.com/wp-content/uploads/2013/06/Blank_Go_board.png';
+
 	// how many cells fit on the canvas
 	var w = ~~ (canvas.width / size);
 	var h = ~~ (canvas.height / size);

@@ -6,7 +6,7 @@ var express = require("express"),
 //setting up environment for app
 app.set('port', process.env.PORT || 3000);
 app.set('view options', {layout: false});
-app.use(express.logger());
+//app.use(express.logger());
 app.use(express.static(__dirname + '/views'));
 
 
