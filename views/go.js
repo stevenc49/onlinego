@@ -2,8 +2,8 @@
 //firefox mouse event fix from: http://stackoverflow.com/questions/12704686/html5-with-jquery-e-offsetx-is-undefined-in-firefox
 
 function loadGame() {
-	// block size`
-	var size = 20;
+	// block size
+	var size = 32;
 
 	// get some info about the canvas
 	var canvas = document.getElementById('canvas');
@@ -13,7 +13,7 @@ function loadGame() {
 	var imageObj = new Image();
 	
 	imageObj.onload = function() {
-		ctx.drawImage(imageObj, 0, 0, 600, 600);
+		ctx.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
 	}
 
 	imageObj.src = 'http://www.mashbout.com/wp-content/uploads/2013/06/Blank_Go_board.png';
@@ -21,6 +21,9 @@ function loadGame() {
 	// how many cells fit on the canvas
 	var w = ~~ (canvas.width / size);
 	var h = ~~ (canvas.height / size);
+
+	//var w = 19;
+	//var h = 19;
 
 	// create empty state array
 	var state = new Array();
@@ -38,9 +41,13 @@ function loadGame() {
 
 	    // quick fill function to save repeating myself later
 	    function fill(s, gx, gy) {
+			ctx.beginPath();
+			//ctx.fillRect(gx * size, gy * size, size, size);
+	   		ctx.arc((gx * size)+16, (gy * size)+16, size/2, 0, 2 * Math.PI, false);
 			ctx.fillStyle = s;
-			ctx.fillRect(gx * size, gy * size, size, size);
-	    }
+			ctx.fill();
+			ctx.closePath(); 
+		}
 
 	    // get mouse click position
 	    var mx = e.offsetX;
