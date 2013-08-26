@@ -41,10 +41,20 @@ function loadGame() {
 
 	    // quick fill function to save repeating myself later
 	    function fill(s, gx, gy) {
+			
+			// Gradient offset
+			var grdOffset = (size/4)+1;
+
+			// Create gradient
+			var grd = ctx.createRadialGradient((gx * size)+grdOffset, (gy * size)+grdOffset, 1, (gx * size)+grdOffset, (gy * size)+grdOffset, 20)
+			grd.addColorStop(0, "grey");
+			grd.addColorStop(1, s);
+
 			ctx.beginPath();
 			//ctx.fillRect(gx * size, gy * size, size, size);
-	   		ctx.arc((gx * size)+16, (gy * size)+16, size/2, 0, 2 * Math.PI, false);
-			ctx.fillStyle = s;
+	   		ctx.arc((gx * size)+16, (gy * size)+16, (size/2)-1, 0, 2 * Math.PI, false);
+			ctx.fillStyle = grd;
+			//ctx.fillStyle = s;
 			ctx.fill();
 			ctx.closePath(); 
 		}
