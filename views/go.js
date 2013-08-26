@@ -40,15 +40,15 @@ function loadGame() {
 	$(canvas).click(function(e) {
 
 	    // quick fill function to save repeating myself later
-	    function fill(s, gx, gy) {
+	    function fill(oc, ic, gx, gy) {
 			
 			// Gradient offset
 			var grdOffset = (size/4)+1;
 
 			// Create gradient
 			var grd = ctx.createRadialGradient((gx * size)+grdOffset, (gy * size)+grdOffset, 1, (gx * size)+grdOffset, (gy * size)+grdOffset, 20)
-			grd.addColorStop(0, "grey");
-			grd.addColorStop(1, s);
+			grd.addColorStop(0, ic);
+			grd.addColorStop(1, oc);
 
 			ctx.beginPath();
 			//ctx.fillRect(gx * size, gy * size, size, size);
@@ -80,13 +80,14 @@ function loadGame() {
 
 	    if (state[gy][gx]) {
 		// if pressed before, flash red
-			fill('red', gx, gy);
-			setTimeout(function() {
-		    	fill('black', gx, gy)
-			}, 1000);
+			fill('grey', 'white', gx, gy);
+			//setTimeout(function() {
+		    //	fill('black', 'grey', gx, gy)
+				//ctx.clearRect(gx, gy, (gx*size), (gy*size));
+			//}, 1000);
 	    } else {
 			state[gy][gx] = true;
-			fill('black', gx, gy);
+			fill('black', 'grey', gx, gy);
 	    }
 	});
 }
