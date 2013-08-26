@@ -1,4 +1,5 @@
 canvas {
 	border: 2px solid black;
-	background-color: grey;
-}
+	background: url(Blank_Go_board.png);
+	background-size: 608px 608px;
+} 

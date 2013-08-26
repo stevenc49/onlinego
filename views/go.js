@@ -10,14 +10,15 @@ function loadGame() {
 	var ctx = canvas.getContext('2d');
 
 	// load go board
-	var imageObj = new Image();
+	//var imageObj = new Image();
 	
-	imageObj.onload = function() {
-		ctx.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
-	}
+	//imageObj.onload = function() {
+	//	ctx.drawImage(imageObj, 0, 0, canvas.width, canvas.height);
+	//}
 
-	imageObj.src = 'http://www.mashbout.com/wp-content/uploads/2013/06/Blank_Go_board.png';
-
+	//imageObj.src = 'http://www.mashbout.com/wp-content/uploads/2013/06/Blank_Go_board.png';
+	//imageObj.src = 'Blank_Go_board.png';
+	
 	// how many cells fit on the canvas
 	var w = ~~ (canvas.width / size);
 	var h = ~~ (canvas.height / size);
@@ -81,6 +82,7 @@ function loadGame() {
 	    if (state[gy][gx]) {
 		// if pressed before, flash red
 			fill('grey', 'white', gx, gy);
+			//ctx.clearRect(gx, gy, (gx * size)-1, (gy * size)-1);
 			//setTimeout(function() {
 		    //	fill('black', 'grey', gx, gy)
 				//ctx.clearRect(gx, gy, (gx*size), (gy*size));
