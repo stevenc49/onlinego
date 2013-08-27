@@ -37,8 +37,25 @@ function loadGame() {
 		//state[y].length[w]
 	}
 
+	// Helper Functions
+	function clearBoard() {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+	}
+
+	function clearCell(x, y) {
+		ctx.clearRect((x*size), (y*size), size, size);
+	}
+
+	// keyboard event, testing purposes
+	//$(document).keydown(function(e) {
+	//	if(e.which == 76) {
+	//		clearBoard();
+	//});
+
 	// click event, using jQuery for cross-browser convenience
 	$(canvas).click(function(e) {
+
+		console.log("Mouse Click Detected");
 
 	    // quick fill function to save repeating myself later
 	    function fill(oc, ic, gx, gy) {
@@ -81,7 +98,11 @@ function loadGame() {
 
 	    if (state[gy][gx]) {
 		// if pressed before, flash red
-			fill('grey', 'white', gx, gy);
+			//fill('grey', 'white', gx, gy);
+			state[gy][gx] = false;
+			//ctx.clearRect((gx * size), (gy * size), size, size);			
+			clearCell(gx, gy);
+
 			//ctx.clearRect(gx, gy, (gx * size)-1, (gy * size)-1);
 			//setTimeout(function() {
 		    //	fill('black', 'grey', gx, gy)
