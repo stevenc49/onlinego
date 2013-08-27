@@ -19,7 +19,10 @@ function loadGame() {
 	//imageObj.src = 'http://www.mashbout.com/wp-content/uploads/2013/06/Blank_Go_board.png';
 	//imageObj.src = 'Blank_Go_board.png';
 
-	var demo = true; // only demo purposes
+	// State of a grid
+	var gState = {	"EMPTY" : 0,
+					"BLACK" : 1,
+					"WHITE" : 2 };
 	
 	// how many cells fit on the canvas
 	var w = ~~ (canvas.width / size);
@@ -98,17 +101,20 @@ function loadGame() {
 		return;
 	    }
 
-	    if (state[gy][gx]) {
-			//fill('grey', 'white', gx, gy);
-			state[gy][gx] = false;
+	    if (state[gy][gx] == gState.BLACK) {
+			state[gy][gx] = gState.WHITE;
+			fill('grey', 'white', gx, gy);
 			//ctx.clearRect((gx * size), (gy * size), size, size);			
-			clearCell(gx, gy);
+			//clearCell(gx, gy);
 
 			//ctx.clearRect(gx, gy, (gx * size)-1, (gy * size)-1);
 			//setTimeout(function() {
 		    //	fill('black', 'grey', gx, gy)
 				//ctx.clearRect(gx, gy, (gx*size), (gy*size));
 			//}, 1000);
+		} else if(state[gy][gx] == gState.WHITE) {
+			state[gy][gx] = gState.EMPTY;
+			clearCell(gx, gy);
 	    } else {
 			state[gy][gx] = true;
 			fill('black', 'grey', gx, gy);
