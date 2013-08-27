@@ -18,6 +18,8 @@ function loadGame() {
 
 	//imageObj.src = 'http://www.mashbout.com/wp-content/uploads/2013/06/Blank_Go_board.png';
 	//imageObj.src = 'Blank_Go_board.png';
+
+	var demo = true; // only demo purposes
 	
 	// how many cells fit on the canvas
 	var w = ~~ (canvas.width / size);
@@ -97,7 +99,6 @@ function loadGame() {
 	    }
 
 	    if (state[gy][gx]) {
-		// if pressed before, flash red
 			//fill('grey', 'white', gx, gy);
 			state[gy][gx] = false;
 			//ctx.clearRect((gx * size), (gy * size), size, size);			

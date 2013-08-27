@@ -1,0 +1,7 @@
+Strat#1
+
+We use "groups" to keep of board pieces for each player.
+If the recent piece is added and theres no adjacent "group" create itself as a new group. Else, add itself to the existing adjacent group.
+
+The worst cast is that there will be a total of 181 groups (unlikely but possible)
+
