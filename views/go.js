@@ -55,6 +55,7 @@ function loadGame() {
 
 	function clearCell(x, y) {
 		ctx.clearRect((x*size), (y*size), size, size);
+		//state[y][x] = gState.EMPTY;
 	}
 
 	function isAdjCell(p, x, y) {
@@ -71,9 +72,9 @@ function loadGame() {
 			q.push(new Cell(state[y][x-1], x-1, y));
 		if(y > 0) 
 			q.push(new Cell(state[y-1][x], x, y-1));	
-		if(x < w)
+		if(x < w-1)
 			q.push(new Cell(state[y][x+1], x+1, y));
-		if(y < h) 
+		if(y < h-1) 
 			q.push(new Cell(state[y+1][x], x, y+1));
 	}
 		
@@ -102,9 +103,12 @@ function loadGame() {
 				adjCell(tmp, t.x, t.y);
 
 			//alert(tmp.length);
+		
+			var u;
+			while (tmp.length > 0) {
 
-			for(var u = tmp.shift(); tmp.length >= 0; u = tmp.shift()) {
 				// If u is not marked
+				u = tmp.shift();
 				var key = u.x.toString()+u.y.toString();
 				if(mark[key] == undefined) {
 					mark[key] = true;
@@ -114,11 +118,47 @@ function loadGame() {
 	
 		}
 		alert("Captured");
-		//return true;
+		return true;
 	}
 
 	function clearCaptured() {
+		var queue = [];
+		var mark = {}; // A hashtable will keep track
+		//queue.push(new Cell(state[y][x], x, y));
+		
+		//mark this state somehow
+		mark[x.toString()+y.toString()] = true;
 
+		//alert(mark[gx.toString()+gy.toString()]);
+		//alert(mark['00']); //if not in hashtable, returns undefined
+
+		//queue.length==0 is similar to queue.empty()
+		while(queue.length!=0) {
+			var t = queue.shift();
+
+			// Find adjacent cells of current cell
+			var tmp = [];
+
+			if(t.state == gState.BLACK) {
+				adjCell(tmp, t.x, t.y);
+				clearCell(t.x, t.y);
+			}
+
+			//alert(tmp.length);
+		
+			var u;
+			while (tmp.length > 0) {
+
+				// If u is not marked
+				u = tmp.shift();
+				var key = u.x.toString()+u.y.toString();
+				if(mark[key] == undefined) {
+					mark[key] = true;
+					queue.push(new Cell(state[u.y][u.x], u.x, u.y)); 
+				}
+			}
+	
+		}
 	}
 
 	// keyboard event, testing purposes
@@ -174,14 +214,17 @@ function loadGame() {
 			fill('grey', 'white', gx, gy);
 
 			//Checking Adjacent Tiles for black pieces 
-			if(isAdjCell(gState.BLACK, gx-1, gy))
-				isCaptured(gx-1, gy);
-			//if(isAdjCell(gState.BLACK, gx, gy-1))
-			//	isCaptured(gx, gy-1);
-			//if(isAdjCell(gState.BLACK, gx+1, gy))
-			//	isCaptured(gx+1, gy);
-			//if(isAdjCell(gState.BLACK, gx, gy+1))
-			//	isCaptured(gx, gy+1);
+			if(isAdjCell(gState.BLACK, gx-1, gy) && isCaptured(gx-1, gy))
+				clearCaptured(gx-1, gy);
+			
+			if(isAdjCell(gState.BLACK, gx, gy-1) && isCaptured(gx, gy-1))
+				clearCaptured(gx, gy-1);
+			
+			if(isAdjCell(gState.BLACK, gx+1, gy) &&	isCaptured(gx+1, gy))
+				clearCaptured(gx+1, gy);
+			
+			if(isAdjCell(gState.BLACK, gx, gy+1) && isCaptured(gx, gy+1))
+				clearCaptured(gx, gy+1);
 
 			//ctx.clearRect((gx * size), (gy * size), size, size);			
 			//clearCell(gx, gy);
