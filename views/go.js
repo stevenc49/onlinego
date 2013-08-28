@@ -23,7 +23,7 @@ function loadGame() {
 	var gState = {	"EMPTY" : 0,
 					"BLACK" : 1,
 					"WHITE" : 2 };
-	
+
 	// how many cells fit on the canvas
 	var w = ~~ (canvas.width / size);
 	var h = ~~ (canvas.height / size);
@@ -42,6 +42,12 @@ function loadGame() {
 		//state[y].length[w]
 	}
 
+	function Cell(state, x, y) {
+		this.state = state;
+		this.x = x;
+		this.y = y;	
+	}
+
 	// Helper Functions
 	function clearBoard() {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -49,6 +55,70 @@ function loadGame() {
 
 	function clearCell(x, y) {
 		ctx.clearRect((x*size), (y*size), size, size);
+	}
+
+	function isAdjCell(p, x, y) {
+		// If this cell is in this grid state
+		if(state[y][x] == p)
+			return true;
+
+		return false;
+	}
+
+	function adjCell(q, x, y) {
+		//check if adjacent cell is inbound
+		if(x > 0)
+			q.push(new Cell(state[y][x-1], x-1, y));
+		if(y > 0) 
+			q.push(new Cell(state[y-1][x], x, y-1));	
+		if(x < w)
+			q.push(new Cell(state[y][x+1], x+1, y));
+		if(y < h) 
+			q.push(new Cell(state[y+1][x], x, y+1));
+	}
+		
+	function isCaptured(x, y) {
+		var queue = [];
+		var mark = {}; // A hashtable will keep track
+		queue.push(new Cell(state[y][x], x, y));
+		
+		//mark this state somehow
+		mark[x.toString()+y.toString()] = true;
+
+		//alert(mark[gx.toString()+gy.toString()]);
+		//alert(mark['00']); //if not in hashtable, returns undefined
+
+		//queue.length==0 is similar to queue.empty()
+		while(queue.length!=0) {
+			var t = queue.shift();
+
+			if((t.state == gState.EMPTY) || (t.state == undefined))
+				return false;
+
+			// Find adjacent cells of current cell
+			var tmp = [];
+
+			if(t.state == gState.BLACK)
+				adjCell(tmp, t.x, t.y);
+
+			//alert(tmp.length);
+
+			for(var u = tmp.shift(); tmp.length >= 0; u = tmp.shift()) {
+				// If u is not marked
+				var key = u.x.toString()+u.y.toString();
+				if(mark[key] == undefined) {
+					mark[key] = true;
+					queue.push(new Cell(state[u.y][u.x], u.x, u.y)); 
+				}
+			}
+	
+		}
+		alert("Captured");
+		//return true;
+	}
+
+	function clearCaptured() {
+
 	}
 
 	// keyboard event, testing purposes
@@ -59,8 +129,6 @@ function loadGame() {
 
 	// click event, using jQuery for cross-browser convenience
 	$(canvas).click(function(e) {
-
-		console.log("Mouse Click Detected");
 
 	    // quick fill function to save repeating myself later
 	    function fill(oc, ic, gx, gy) {
@@ -104,6 +172,17 @@ function loadGame() {
 	    if (state[gy][gx] == gState.BLACK) {
 			state[gy][gx] = gState.WHITE;
 			fill('grey', 'white', gx, gy);
+
+			//Checking Adjacent Tiles for black pieces 
+			if(isAdjCell(gState.BLACK, gx-1, gy))
+				isCaptured(gx-1, gy);
+			//if(isAdjCell(gState.BLACK, gx, gy-1))
+			//	isCaptured(gx, gy-1);
+			//if(isAdjCell(gState.BLACK, gx+1, gy))
+			//	isCaptured(gx+1, gy);
+			//if(isAdjCell(gState.BLACK, gx, gy+1))
+			//	isCaptured(gx, gy+1);
+
 			//ctx.clearRect((gx * size), (gy * size), size, size);			
 			//clearCell(gx, gy);
 
@@ -118,7 +197,8 @@ function loadGame() {
 	    } else {
 			state[gy][gx] = true;
 			fill('black', 'grey', gx, gy);
-	    }
+	    	//isCaptured(gx, gy);
+		}
 	});
 }
 
