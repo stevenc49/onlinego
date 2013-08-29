@@ -51,11 +51,12 @@ function loadGame() {
 	// Helper Functions
 	function clearBoard() {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		//TODO: set all state to EMPTY 
 	}
 
 	function clearCell(x, y) {
 		ctx.clearRect((x*size), (y*size), size, size);
-		//state[y][x] = gState.EMPTY;
+		state[y][x] = gState.EMPTY;
 	}
 
 	function isAdjCell(p, x, y) {
@@ -121,10 +122,10 @@ function loadGame() {
 		return true;
 	}
 
-	function clearCaptured() {
+	function clearCaptured(x, y) {
 		var queue = [];
 		var mark = {}; // A hashtable will keep track
-		//queue.push(new Cell(state[y][x], x, y));
+		queue.push(new Cell(state[y][x], x, y));
 		
 		//mark this state somehow
 		mark[x.toString()+y.toString()] = true;
