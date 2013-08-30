@@ -79,7 +79,7 @@ function loadGame() {
 			q.push(new Cell(state[y+1][x], x, y+1));
 	}
 		
-	function isCaptured(x, y) {
+	function isCaptured(s, x, y) {
 		var queue = [];
 		var mark = {}; // A hashtable will keep track
 		queue.push(new Cell(state[y][x], x, y));
@@ -100,7 +100,7 @@ function loadGame() {
 			// Find adjacent cells of current cell
 			var tmp = [];
 
-			if(t.state == gState.BLACK)
+			if(t.state == s)
 				adjCell(tmp, t.x, t.y);
 
 			//alert(tmp.length);
@@ -122,7 +122,7 @@ function loadGame() {
 		return true;
 	}
 
-	function clearCaptured(x, y) {
+	function clearCaptured(s, x, y) {
 		var queue = [];
 		var mark = {}; // A hashtable will keep track
 		queue.push(new Cell(state[y][x], x, y));
@@ -140,7 +140,7 @@ function loadGame() {
 			// Find adjacent cells of current cell
 			var tmp = [];
 
-			if(t.state == gState.BLACK) {
+			if(t.state == s) {
 				adjCell(tmp, t.x, t.y);
 				clearCell(t.x, t.y);
 			}
@@ -214,18 +214,20 @@ function loadGame() {
 			state[gy][gx] = gState.WHITE;
 			fill('grey', 'white', gx, gy);
 
+			var op = gState.BLACK;
+
 			//Checking Adjacent Tiles for black pieces 
-			if(isAdjCell(gState.BLACK, gx-1, gy) && isCaptured(gx-1, gy))
-				clearCaptured(gx-1, gy);
+			if(isAdjCell(op, gx-1, gy) && isCaptured(op, gx-1, gy))
+				clearCaptured(op, gx-1, gy);
 			
-			if(isAdjCell(gState.BLACK, gx, gy-1) && isCaptured(gx, gy-1))
-				clearCaptured(gx, gy-1);
+			if(isAdjCell(op, gx, gy-1) && isCaptured(op, gx, gy-1))
+				clearCaptured(op, gx, gy-1);
 			
-			if(isAdjCell(gState.BLACK, gx+1, gy) &&	isCaptured(gx+1, gy))
-				clearCaptured(gx+1, gy);
+			if(isAdjCell(op, gx+1, gy) && isCaptured(op, gx+1, gy))
+				clearCaptured(op, gx+1, gy);
 			
-			if(isAdjCell(gState.BLACK, gx, gy+1) && isCaptured(gx, gy+1))
-				clearCaptured(gx, gy+1);
+			if(isAdjCell(op, gx, gy+1) && isCaptured(op, gx, gy+1))
+				clearCaptured(op, gx, gy+1);
 
 			//ctx.clearRect((gx * size), (gy * size), size, size);			
 			//clearCell(gx, gy);
@@ -239,8 +241,24 @@ function loadGame() {
 			state[gy][gx] = gState.EMPTY;
 			clearCell(gx, gy);
 	    } else {
-			state[gy][gx] = true;
+			state[gy][gx] = gState.BLACK;
 			fill('black', 'grey', gx, gy);
+
+			var op = gState.WHITE;
+
+			//Checking Adjacent Tiles for black pieces 
+			if(isAdjCell(op, gx-1, gy) && isCaptured(op, gx-1, gy))
+				clearCaptured(op, gx-1, gy);
+			
+			if(isAdjCell(op, gx, gy-1) && isCaptured(op, gx, gy-1))
+				clearCaptured(op, gx, gy-1);
+			
+			if(isAdjCell(op, gx+1, gy) && isCaptured(op, gx+1, gy))
+				clearCaptured(op, gx+1, gy);
+			
+			if(isAdjCell(op, gx, gy+1) && isCaptured(op, gx, gy+1))
+				clearCaptured(op, gx, gy+1);
+
 	    	//isCaptured(gx, gy);
 		}
 	});
