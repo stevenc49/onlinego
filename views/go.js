@@ -9,6 +9,10 @@ function loadGame() {
 	var canvas = document.getElementById('canvas');
 	var ctx = canvas.getContext('2d');
 
+	// only reason this is global is because of the "transparent piece" over cell
+	var o_gx = 0; 
+	var o_gy = 0;
+
 	// load go board
 	//var imageObj = new Image();
 	
@@ -118,7 +122,7 @@ function loadGame() {
 			}
 	
 		}
-		alert("Captured");
+		//alert("Captured");
 		return true;
 	}
 
@@ -167,6 +171,87 @@ function loadGame() {
 	//	if(e.which == 76) {
 	//		clearBoard();
 	//});
+
+	//$(canvas).hover(
+		// Create a piece as the mouse goes over an empty cell
+		//function(e) {
+		
+		//var mx, my;
+	
+		//if( (e.offsetX || e.offsetY) == undefined) {
+		//	mx = e.pageX-$('canvas').offset().left;
+		//	my = e.pageY-$('canvas').offset().top;
+		//}
+
+		//alert(mx);
+		//alert(my);
+
+		//var gx = ~~ (mx / size);
+		//var gy = ~~ (my / size);
+
+		//alert(gx);
+		//alert(gy);
+
+		//	ctx.fillRect((gx*size), (gy*size), size, size);
+		//	ctx.fillStyle = 'red';
+		//},
+		// Removes the piece as the mouse goes leaves the empty cell
+		//function(e) {
+		//	clearBoard();
+		//}
+
+	//);
+
+//	$(canvas).mousemove(function(e) {
+//		function fill(oc, ic, gx, gy) {
+//			
+//			// Gradient offset
+//			var grdOffset = (size/4)+1;
+
+//			// Create gradient
+//			var grd = ctx.createRadialGradient((gx * size)+grdOffset, (gy * size)+grdOffset, 1, (gx * size)+grdOffset, (gy * size)+grdOffset, 20)
+//			grd.addColorStop(0, ic);
+//			grd.addColorStop(1, oc);
+
+//			ctx.beginPath();
+//			//ctx.fillRect(gx * size, gy * size, size, size);
+//	   		ctx.arc((gx * size)+16, (gy * size)+16, (size/2)-1, 0, 2 * Math.PI, false);
+//			ctx.fillStyle = grd;
+//			//ctx.fillStyle = s;
+//			ctx.fill();
+//			ctx.closePath(); 
+//		}
+
+//		var mx, my;
+//	
+//		if( (e.offsetX || e.offsetY) == undefined) {
+//			mx = e.pageX-$('canvas').offset().left;
+//			my = e.pageY-$('canvas').offset().top;
+//		}
+
+//		//var o_gx, o_gy;
+
+//		var gx = ~~ (mx / size);
+//		var gy = ~~ (my / size);
+
+//		//alert(o_gx);
+
+//		//alert(gx);
+//		// If the mouse is no longer in the previous cell, clear that cell
+//		if((state[o_gy][o_gx] == gState.EMPTY) || (state[o_gy][o_gx] == undefined)) {
+//			if((gx != o_gx) || (gy != o_gy)) {
+//				clearCell(o_gx, o_gy);
+//				o_gx = gx;
+//				o_gy = gy;
+//			}
+//		
+//		ctx.fillRect((gx*size), (gy*size), size, size);
+//		ctx.fillStyle = 'red';
+//		}		
+//		//fill('black', 'grey', gx, gy);
+
+//		//setTimeout(function(), 1);
+//	});
 
 	// click event, using jQuery for cross-browser convenience
 	$(canvas).click(function(e) {
