@@ -65,10 +65,10 @@ function loadGame() {
 
 	function isAdjCell(p, x, y) {
 		// If this cell is in this grid state
-		if(state[y][x] == p)
+	//	if(state[y][x] == p)
 			return true;
 
-		return false;
+	//	return false;
 	}
 
 	function adjCell(q, x, y) {
@@ -302,16 +302,17 @@ function loadGame() {
 			var op = gState.BLACK;
 
 			//Checking Adjacent Tiles for black pieces 
-			if(isAdjCell(op, gx-1, gy) && isCaptured(op, gx-1, gy))
+			if(isCaptured(op, gx-1, gy))
 				clearCaptured(op, gx-1, gy);
 			
-			if(isAdjCell(op, gx, gy-1) && isCaptured(op, gx, gy-1))
+			//the gy-1 >= 0 fixes a bug with the capturing
+			if((gy-1 >= 0) && isCaptured(op, gx, gy-1))
 				clearCaptured(op, gx, gy-1);
 			
-			if(isAdjCell(op, gx+1, gy) && isCaptured(op, gx+1, gy))
+			if(isCaptured(op, gx+1, gy))
 				clearCaptured(op, gx+1, gy);
 			
-			if(isAdjCell(op, gx, gy+1) && isCaptured(op, gx, gy+1))
+			if(isCaptured(op, gx, gy+1))
 				clearCaptured(op, gx, gy+1);
 
 			//ctx.clearRect((gx * size), (gy * size), size, size);			
@@ -332,16 +333,17 @@ function loadGame() {
 			var op = gState.WHITE;
 
 			//Checking Adjacent Tiles for black pieces 
-			if(isAdjCell(op, gx-1, gy) && isCaptured(op, gx-1, gy))
+			if(isCaptured(op, gx-1, gy))
 				clearCaptured(op, gx-1, gy);
-			
-			if(isAdjCell(op, gx, gy-1) && isCaptured(op, gx, gy-1))
+		
+			//the gy-1 >= 0 fixs a small bug to make the capturing works	
+			if((gy-1 >= 0) && isCaptured(op, gx, gy-1))
 				clearCaptured(op, gx, gy-1);
 			
-			if(isAdjCell(op, gx+1, gy) && isCaptured(op, gx+1, gy))
+			if(isCaptured(op, gx+1, gy))
 				clearCaptured(op, gx+1, gy);
 			
-			if(isAdjCell(op, gx, gy+1) && isCaptured(op, gx, gy+1))
+			if(isCaptured(op, gx, gy+1))
 				clearCaptured(op, gx, gy+1);
 
 	    	//isCaptured(gx, gy);
