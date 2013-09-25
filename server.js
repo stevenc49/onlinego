@@ -22,3 +22,10 @@ app.get('/', function(req, res) {
 console.log("Server is starting at port " + app.get('port'));
 
 
+io.sockets.on('connection', function(socket) {
+
+	// when the client emits sendMoveToServer, this listens and executes
+	socket.on('sendMoveToServer', function(moveMsg) {
+		io.sockets.emit("broadcastMove", moveMsg);
+	});
+});

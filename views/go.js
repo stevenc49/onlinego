@@ -9,6 +9,8 @@ function loadGame() {
 	var canvas = document.getElementById('canvas');
 	var ctx = canvas.getContext('2d');
 
+	var socket = io.connect('http://localhost:3000');
+
 	// only reason this is global is because of the "transparent piece" over cell
 	var o_gx = 0; 
 	var o_gy = 0;
@@ -290,6 +292,15 @@ function loadGame() {
 	    var gx = ~~ (mx / size);
 	    var gy = ~~ (my / size);
 	    
+
+
+	    //send x, y to the server
+	    var moveMsg = gx.toString() + " " + gy.toString(); 
+	    console.log(moveMsg);
+    	socket.emit('sendMoveToServer', moveMsg);
+
+
+
 	    // make sure we're in bounds
 	    if (gx < 0 || gx >= w || gy < 0 || gy >= h) {
 		return;
@@ -348,6 +359,11 @@ function loadGame() {
 
 	    	//isCaptured(gx, gy);
 		}
+	});
+
+	// listener, whenever the server emits 'broadcastMove', this executes
+	socket.on('broadcastMove', function(data) {
+		console.log("FROM SERVER: " + data)
 	});
 }
 
