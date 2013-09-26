@@ -258,26 +258,6 @@ function loadGame() {
 	// click event, using jQuery for cross-browser convenience
 	$(canvas).click(function(e) {
 
-	    // quick fill function to save repeating myself later
-	    function fill(oc, ic, gx, gy) {
-			
-			// Gradient offset
-			var grdOffset = (size/4)+1;
-
-			// Create gradient
-			var grd = ctx.createRadialGradient((gx * size)+grdOffset, (gy * size)+grdOffset, 1, (gx * size)+grdOffset, (gy * size)+grdOffset, 20)
-			grd.addColorStop(0, ic);
-			grd.addColorStop(1, oc);
-
-			ctx.beginPath();
-			//ctx.fillRect(gx * size, gy * size, size, size);
-	   		ctx.arc((gx * size)+16, (gy * size)+16, (size/2)-1, 0, 2 * Math.PI, false);
-			ctx.fillStyle = grd;
-			//ctx.fillStyle = s;
-			ctx.fill();
-			ctx.closePath(); 
-		}
-
 	    // get mouse click position
 	    var mx = e.offsetX;
 	    var my = e.offsetY;
@@ -291,15 +271,45 @@ function loadGame() {
 	    // calculate grid square numbers
 	    var gx = ~~ (mx / size);
 	    var gy = ~~ (my / size);
-	    
-
 
 	    //send x, y to the server
 	    var moveMsg = gx.toString() + " " + gy.toString(); 
 	    console.log(moveMsg);
     	socket.emit('sendMoveToServer', moveMsg);
 
+    	drawPiece(gx, gy);
+	});
 
+	// listener, whenever the server emits 'broadcastMove', this executes
+	socket.on('broadcastMove', function(data) {
+		console.log("FROM SERVER: " + data)
+
+		var coordinates = data.split(" ");
+
+		drawPiece(coordinates[0], coordinates[1]);
+	});
+
+    // quick fill function to save repeating myself later
+    function fill(oc, ic, gx, gy) {
+		
+		// Gradient offset
+		var grdOffset = (size/4)+1;
+
+		// Create gradient
+		var grd = ctx.createRadialGradient((gx * size)+grdOffset, (gy * size)+grdOffset, 1, (gx * size)+grdOffset, (gy * size)+grdOffset, 20)
+		grd.addColorStop(0, ic);
+		grd.addColorStop(1, oc);
+
+		ctx.beginPath();
+		//ctx.fillRect(gx * size, gy * size, size, size);
+   		ctx.arc((gx * size)+16, (gy * size)+16, (size/2)-1, 0, 2 * Math.PI, false);
+		ctx.fillStyle = grd;
+		//ctx.fillStyle = s;
+		ctx.fill();
+		ctx.closePath(); 
+	}
+
+    function drawPiece(gx, gy) {
 
 	    // make sure we're in bounds
 	    if (gx < 0 || gx >= w || gy < 0 || gy >= h) {
@@ -359,12 +369,7 @@ function loadGame() {
 
 	    	//isCaptured(gx, gy);
 		}
-	});
-
-	// listener, whenever the server emits 'broadcastMove', this executes
-	socket.on('broadcastMove', function(data) {
-		console.log("FROM SERVER: " + data)
-	});
+	}
 }
 
 window.addEventListener("load", loadGame, false);
