@@ -38,17 +38,18 @@ io.sockets.on('connection', function(socket) {
 
 			players.push(socket.playerColor);
 		}
-
-		// when the player disconnects
-		socket.on('disconnect', function() {
-
-			players.length = 0;		//clear player array
-			socket.broadcast.emit('disconnect');
-		});
 	});
 
 	// when the client emits sendMoveToServer, this listens and executes
 	socket.on('sendMoveToServer', function(moveMsg) {
-		io.sockets.emit("broadcastMove", moveMsg);
+		socket.broadcast.emit("broadcastMove", moveMsg);
 	});
+
+	// when the player disconnects
+	socket.on('disconnect', function() {
+
+		players.length = 0;		//clear player array
+		socket.broadcast.emit('disconnect');
+	});
+	
 });

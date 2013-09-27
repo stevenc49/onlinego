@@ -155,7 +155,7 @@ function loadGame() {
 
 	    //send x, y to the server
 	    var moveMsg = gx.toString() + " " + gy.toString(); 
-	    console.log(moveMsg);
+
     	socket.emit('sendMoveToServer', moveMsg);
 
     	drawPiece(gx, gy);
@@ -188,11 +188,13 @@ function loadGame() {
 		return;
 	    }
 
-	    if (state[gy][gx] == gState.BLACK) {
-			state[gy][gx] = gState.WHITE;
-			fill('grey', 'white', gx, gy);
+	    // if (state[gy][gx] == gState.BLACK) {
 
-			var op = gState.BLACK;
+	    if(playerColor == "BLACK") {
+	    	state[gy][gx] = playerColor;
+			fill('black', 'grey', gx, gy);
+
+			var op = playerColor;
 
 			//Checking Adjacent Tiles for black pieces 
 			if(isCaptured(op, gx-1, gy))
@@ -207,21 +209,17 @@ function loadGame() {
 			
 			if(isCaptured(op, gx, gy+1))
 				clearCaptured(op, gx, gy+1);
-
-		} else if(state[gy][gx] == gState.WHITE) {
-			state[gy][gx] = gState.EMPTY;
-			clearCell(gx, gy);
 	    } else {
-			state[gy][gx] = gState.BLACK;
-			fill('black', 'grey', gx, gy);
+	    	state[gy][gx] = playerColor;
+			fill('grey', 'white', gx, gy);
 
-			var op = gState.WHITE;
+			var op = playerColor;
 
 			//Checking Adjacent Tiles for black pieces 
 			if(isCaptured(op, gx-1, gy))
 				clearCaptured(op, gx-1, gy);
-		
-			//the gy-1 >= 0 fixs a small bug to make the capturing works	
+			
+			//the gy-1 >= 0 fixes a bug with the capturing
 			if((gy-1 >= 0) && isCaptured(op, gx, gy-1))
 				clearCaptured(op, gx, gy-1);
 			
@@ -230,7 +228,7 @@ function loadGame() {
 			
 			if(isCaptured(op, gx, gy+1))
 				clearCaptured(op, gx, gy+1);
-		}
+	    }
 	}
 
 	// on connection to server
@@ -241,10 +239,14 @@ function loadGame() {
 	// listener, whenever the server emits 'sendColorToClient', this executes
 	socket.on('sendColorToClient', function(color) {
 		playerColor = color;
+		console.log("you are " + playerColor);
 	});
 
 	// listener, whenever the server emits 'broadcastMove', this executes
 	socket.on('broadcastMove', function(data) {
+
+		console.log(data);
+
 		var coordinates = data.split(" ");
 		drawPiece(coordinates[0], coordinates[1]);
 	});
