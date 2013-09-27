@@ -158,7 +158,7 @@ function loadGame() {
 
     	socket.emit('sendMoveToServer', moveMsg);
 
-    	drawPiece(gx, gy);
+    	drawPiece(gx, gy, playerColor);
 	});
 
     // quick fill function to save repeating myself later
@@ -181,7 +181,7 @@ function loadGame() {
 		ctx.closePath(); 
 	}
 
-    function drawPiece(gx, gy) {
+    function drawPiece(gx, gy, color) {
 
 	    // make sure we're in bounds
 	    if (gx < 0 || gx >= w || gy < 0 || gy >= h) {
@@ -190,11 +190,11 @@ function loadGame() {
 
 	    // if (state[gy][gx] == gState.BLACK) {
 
-	    if(playerColor == "BLACK") {
-	    	state[gy][gx] = playerColor;
+	    if(color == "BLACK") {
+	    	state[gy][gx] = color;
 			fill('black', 'grey', gx, gy);
 
-			var op = playerColor;
+			var op = color;
 
 			//Checking Adjacent Tiles for black pieces 
 			if(isCaptured(op, gx-1, gy))
@@ -210,10 +210,10 @@ function loadGame() {
 			if(isCaptured(op, gx, gy+1))
 				clearCaptured(op, gx, gy+1);
 	    } else {
-	    	state[gy][gx] = playerColor;
+	    	state[gy][gx] = color;
 			fill('grey', 'white', gx, gy);
 
-			var op = playerColor;
+			var op = color;
 
 			//Checking Adjacent Tiles for black pieces 
 			if(isCaptured(op, gx-1, gy))
@@ -248,7 +248,12 @@ function loadGame() {
 		console.log(data);
 
 		var coordinates = data.split(" ");
-		drawPiece(coordinates[0], coordinates[1]);
+
+		if(playerColor=="BLACK") {
+			drawPiece(coordinates[0], coordinates[1], "WHITE");
+		} else {
+			drawPiece(coordinates[0], coordinates[1], "BLACK");
+		}
 	});
 
 	// listener, whenever the server emits 'disconnect', this executes
