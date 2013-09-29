@@ -1,4 +1,4 @@
-pandaWeekend
+Online Go Game
 ============
 
-testing
+Fun little go game that uses socket.io
