@@ -1,0 +1,19 @@
+{
+  "name": "onlinego",
+  "subdomain": "onlinego",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "version": "0.10.17-4",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "dependencies": {
+    "express": "3.3.5",
+    "socket.io": "0.9.16"
+  },
+  "bundledDependencies": [
+    "express",
+    "socket.io"
+  ]
+}
